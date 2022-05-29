@@ -4,7 +4,7 @@ from ModelBase import *
 
 class Reconstuctions():
     @staticmethod
-    def piece_wise(physicalProperty:PhysicalPropertyBase):
+    def piece_wise(physicalProperty:PhysicalPropertyBase) -> None:
         for i in range(1,len(physicalProperty.value)):
             physicalProperty.leftBoundaryValue[i] = physicalProperty.value[i-1]
             physicalProperty.rightBoundaryValue[i] = physicalProperty.value[i]
