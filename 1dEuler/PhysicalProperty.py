@@ -5,7 +5,7 @@ from typing import Final
 # 境界値位置モデル
 class X():
     def __init__(self, length:int):
-        self.value = [0 for _ in range(length+1)]
+        self.value = [0. for _ in range(length+1)]
         
 
 # 圧力モデル
@@ -22,13 +22,15 @@ class P():
     
 # 密度モデル（質量保存則）
 class Rho(ModelBase.PhysicalPropertyBase):
-    def F(self, rhoU) -> float:
+    @staticmethod
+    def F(rhoU) -> float:
         return rhoU
 
 
 # 運動量モデル（運動量保存則）
-class RhoU(ModelBase.PhysicalPropertyBase):        
-    def F(self, rho:float, rhoU:float, rhoE:float , p:P) -> float:
+class RhoU(ModelBase.PhysicalPropertyBase):
+    @staticmethod
+    def F(rho:float, rhoU:float, rhoE:float , p:P) -> float:
         if not (type(rho) is float and type(rhoU) is float and type(rhoE) is float):
             raise TypeError
         if type(p) is not P:
@@ -38,8 +40,9 @@ class RhoU(ModelBase.PhysicalPropertyBase):
 
 
 # 総エネルギーモデル（エネルギー保存則）
-class RhoE(ModelBase.PtysicalPropetyBase):        
-    def F(self, rho:float, rhoU:float, rhoE:float, p:P) -> float:
+class RhoE(ModelBase.PhysicalPropertyBase):
+    @staticmethod
+    def F(rho:float, rhoU:float, rhoE:float, p:P) -> float:
         if not (type(rho) is float and type(rhoU) is float and type(rhoE) is float):
             raise TypeError
         if type(p) is not P:
