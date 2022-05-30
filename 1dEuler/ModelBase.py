@@ -9,6 +9,7 @@ class PhysicalPropertyBase():
         self.value = [0. for _ in range(length)]
         self.leftBoundaryValue = [0. for _ in range(length+1)]
         self.rightBoundaryValue = [0. for _ in range(length+1)]
+        self.f = [0. for _ in range(length+1)]
         
     def F(self) -> float:
         raise NotImplementedError
