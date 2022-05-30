@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import ModelBase
 from typing import Final
 
@@ -24,29 +26,28 @@ class P():
 class Rho(ModelBase.PhysicalPropertyBase):
     @staticmethod
     def F(rhoU) -> float:
+        if type(rhoU) is not float:
+            raise TypeError
+        
         return rhoU
 
 
 # 運動量モデル（運動量保存則）
 class RhoU(ModelBase.PhysicalPropertyBase):
     @staticmethod
-    def F(rho:float, rhoU:float, rhoE:float , p:P) -> float:
-        if not (type(rho) is float and type(rhoU) is float and type(rhoE) is float):
-            raise TypeError
-        if type(p) is not P:
+    def F(rho:float, rhoU:float, p:float) -> float:
+        if not (type(rho) is float and type(rhoU) is float and type(p) is float):
             raise TypeError
         
-        return rhoU ** 2 / rho + p(rho, rhoU, rhoE)
+        return rhoU ** 2 / rho + p
 
 
 # 総エネルギーモデル（エネルギー保存則）
 class RhoE(ModelBase.PhysicalPropertyBase):
     @staticmethod
-    def F(rho:float, rhoU:float, rhoE:float, p:P) -> float:
-        if not (type(rho) is float and type(rhoU) is float and type(rhoE) is float):
-            raise TypeError
-        if type(p) is not P:
+    def F(rho:float, rhoU:float, rhoE:float, p:float) -> float:
+        if not (type(rho) is float and type(rhoU) is float and type(rhoE) is float and type(p) is float):
             raise TypeError
         
-        return (rhoE + p(rho, rhoU, rhoE)) * rhoU / rho
+        return (rhoE + p) * rhoU / rho
     
