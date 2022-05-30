@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import math
 
+from ModelBase import SolverBase
 from PhysicalProperty import *
 
 
-class RiemannRoe():
+class RiemannRoe(SolverBase):
     def __init__(self, rho:Rho, rhoU:RhoU, rhoE:RhoE, p:P, epsilon:float=0.15):
         if type(epsilon) is not float:
             raise TypeError
@@ -55,14 +56,14 @@ class RiemannRoe():
             self.rhoE.f[i] = .5 * (self.rhoE.F(rhoR, rhoR*uR, rhoR*eR, pR) + self.rhoE.F(rhoL, rhoL*uL, rhoL*eL, pL)) \
                 - .5 * (lambda1*dw1*(uAve**2/2) + lambda2*rhoAve/(2*cAve)*dw2*(hAve+cAve*uAve) - lambda3*rhoAve/(2*cAve)*dw3*(hAve-cAve*uAve))
 
-            # 境界条件
-            self.rho.f[0] = self.rho.f[1] = self.rho.f[2]
-            self.rhoU.f[0] = self.rhoU.f[1] = self.rhoU.f[2]
-            self.rhoE.f[0] = self.rhoE.f[1] = self.rhoE.f[2]
-            
-            self.rho.f[-1] = self.rho.f[-2] = self.rho.f[-3]
-            self.rhoU.f[-1] = self.rhoU.f[-2] = self.rhoE.f[-3]
-            self.rhoE.f[-1] = self.rhoE.f[-2] = self.rhoE.f[-3]
+        # 境界条件
+        self.rho.f[0] = self.rho.f[1]
+        self.rhoU.f[0] = self.rhoU.f[1]
+        self.rhoE.f[0] = self.rhoE.f[1]
+        
+        self.rho.f[-1] = self.rho.f[-2]
+        self.rhoU.f[-1] = self.rhoU.f[-2]
+        self.rhoE.f[-1] = self.rhoE.f[-2]
         
 
 def Harten(alpha:float, epsilon:float) -> float:

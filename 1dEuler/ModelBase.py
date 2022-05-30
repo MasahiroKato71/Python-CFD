@@ -13,4 +13,10 @@ class PhysicalPropertyBase():
         
     def F(self) -> float:
         raise NotImplementedError
+    
+    
+class SolverBase():
+    def __call__() -> None:
+        raise NotImplementedError
+        
             
