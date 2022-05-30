@@ -76,7 +76,6 @@ for i, x_ in enumerate(x.value[:-1]):
                
 
 t = 0.
-dt = 0.
 n = 0.
 
 riemannRoe = RiemannRoe(rho, rhoU, rhoE, p, epsilon=0.15)
@@ -86,8 +85,8 @@ plt.plot(x.value[:-1], rho.value, lw=2, label="t=0")
 
 while t < TSTOP:
      n += 1
-     t += dt
      dt = cfl(rho, rhoU, rhoE, p, x, CFL)
+     t += dt
      Reconstuctions.piece_wise(rho)
      Reconstuctions.piece_wise(rhoU)
      Reconstuctions.piece_wise(rhoE)
