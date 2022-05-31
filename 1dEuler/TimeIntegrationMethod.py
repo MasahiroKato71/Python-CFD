@@ -27,7 +27,7 @@ class EulearFront():
         if figName:
             plt.figure(figsize=(16,9))
             plt.rcParams["font.size"] = 26
-            plt.plot(self.x.value[1:-2], self.rho.value[1:-1], lw=2, label="t=0")
+            plt.plot(self.x.value[1:-1], self.rho.value[1:-1], lw=2, label="t=0")
 
         while t < endtime:
             n += 1
@@ -43,10 +43,10 @@ class EulearFront():
             t += dt
             
             if n % pltInterval == 0:
-                plt.plot(self.x.value[1:-2], self.rho.value[1:-1], lw=2, label=f"t={t:.2f}")
+                plt.plot(self.x.value[1:-1], self.rho.value[1:-1], lw=2, label=f"t={t:.2f}")
 
         if figName:
-            plt.plot(self.x.value[1:-2], self.rho.value[1:-1], lw=2, label=f"t={t:.2f}")
+            plt.plot(self.x.value[1:-1], self.rho.value[1:-1], lw=2, label=f"t={t:.2f}")
             plt.xlabel("x")
             plt.ylabel("rho")
             plt.legend()
@@ -56,9 +56,9 @@ class EulearFront():
         if type(dt) is not float:
             raise TypeError
         for i in range(1, len(self.rho.value)):
-            self.rho.value[i] += dt*(self.rho.f[i] - self.rho.f[i+1]) / (self.x.value[i+1] - self.x.value[i])
-            self.rhoU.value[i] += dt*(self.rhoU.f[i] - self.rhoU.f[i+1]) / (self.x.value[i+1] - self.x.value[i])
-            self.rhoE.value[i] += dt*(self.rhoE.f[i] - self.rhoE.f[i+1]) / (self.x.value[i+1] - self.x.value[i])
+            self.rho.value[i] += dt*(self.rho.f[i] - self.rho.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
+            self.rhoU.value[i] += dt*(self.rhoU.f[i] - self.rhoU.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
+            self.rhoE.value[i] += dt*(self.rhoE.f[i] - self.rhoE.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
           
           
     def dtCalc(self) -> float:
@@ -70,7 +70,7 @@ class EulearFront():
             lambda2 = abs(u + c)
             lambda3 = abs(u - c)
             lambdaMax = max(lambda1, lambda2, lambda3, 0.1)
-            dt = min(dt, self.cflnum*(self.x.value[i+1] - self.x.value[i])/lambdaMax)
+            dt = min(dt, self.cflnum*(self.x.boundaryValue[i+1] - self.x.boundaryValue[i])/lambdaMax)
         
         return dt
 

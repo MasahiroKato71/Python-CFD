@@ -14,11 +14,13 @@ def ShockTube(lenght:int, rhoLow:float, rhoHigh:float, pLow:float, pHigh:float, 
     p = P(gamma)
     x = X(lenght)
     
-    x.value[0] = xMin - dx
+    x.boundaryValue[0] = xMin - dx
     for i in range(1,lenght+1):
-        x.value[i] = x.value[i-1] + dx
+        x.boundaryValue[i] = x.boundaryValue[i-1] + dx
         
-    for i, x_ in enumerate(x.value[:-1]):
+    x.setValue()
+        
+    for i, x_ in enumerate(x.boundaryValue[:-1]):
         if x_ < (xMax+xMin)/2:
             p_ = pHigh
             u_ = 0.
