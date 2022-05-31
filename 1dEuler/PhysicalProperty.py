@@ -4,11 +4,15 @@ import ModelBase
 from typing import Final
 
 
-# 境界値位置モデル
+# セル位置モデル
 class X():
     def __init__(self, length:int):
-        self.value = [0. for _ in range(length+1)]
+        self.value = [0. for _ in range(length)]
+        self.boundaryValue = [0. for _ in range(length+1)]
         
+    def setValue(self):
+        for i in range(len(self.value)-1):
+            self.value[i] = (self.boundaryValue[i] + self.boundaryValue[i+1]) / 2
 
 # 圧力モデル
 class P():
