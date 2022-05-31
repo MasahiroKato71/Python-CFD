@@ -25,9 +25,10 @@ class EulearFront():
         n = 0
 
         if figName:
-            plt.figure(figsize=(16,9))
             plt.rcParams["font.size"] = 26
-            plt.plot(self.x.value[1:-1], self.rho.value[1:-1], lw=2, label="t=0")
+            fig, (figRho, figP) = plt.subplots(figsize=(16,12), nrows=2, ncols=1, sharex=True)
+            figRho.plot(self.x.value[1:-1], self.rho.value[1:-1], label="t=0.00")
+            figP.plot(self.x.value[1:-1], [self.p(self.rho.value[i], self.rhoU.value[i], self.rhoE.value[i]) for i in range(1, len(self.x.value)-1)], label="t=0.00")
 
         while t < endtime:
             n += 1
@@ -43,13 +44,17 @@ class EulearFront():
             t += dt
             
             if n % pltInterval == 0:
-                plt.plot(self.x.value[1:-1], self.rho.value[1:-1], lw=2, label=f"t={t:.2f}")
+                figRho.plot(self.x.value[1:-1], self.rho.value[1:-1], label=f"t={t:.2f}")
+                figP.plot(self.x.value[1:-1], [self.p(self.rho.value[i], self.rhoU.value[i], self.rhoE.value[i]) for i in range(1, len(self.x.value)-1)], label=f"t={t:.2f}")
 
         if figName:
-            plt.plot(self.x.value[1:-1], self.rho.value[1:-1], lw=2, label=f"t={t:.2f}")
-            plt.xlabel("x")
-            plt.ylabel("rho")
-            plt.legend()
+            figRho.plot(self.x.value[1:-1], self.rho.value[1:-1], label=f"t={t:.2f}")
+            figRho.set_ylabel("rho")
+            figRho.legend()
+            figP.plot(self.x.value[1:-1], [self.p(self.rho.value[i], self.rhoU.value[i], self.rhoE.value[i]) for i in range(1, len(self.x.value)-1)], label=f"t={t:.2f}")
+            figP.set_xlabel("x")
+            figP.set_ylabel("p")
+            figP.legend()
             plt.savefig(figName)
         
     def update(self, dt:float) -> None:
