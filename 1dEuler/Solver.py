@@ -12,13 +12,14 @@ class RiemannRoe(SolverBase):
             raise TypeError
         
         self.rho = self.rhoU = self.rhoE = self.p = None
+        self.order = None
         self.epsilon = epsilon
         
     def __call__(self) -> None:
-        for i in range(1, len(self.rho.rightBoundaryValue)-1):
+        for i in range(self.order, len(self.rho.leftBoundaryValue)-self.order):
             # プリミティブ変数の算出
-            rhoR = self.rho.rightBoundaryValue[i]
             rhoL = self.rho.leftBoundaryValue[i]
+            rhoR = self.rho.rightBoundaryValue[i]
             uL = self.rhoU.leftBoundaryValue[i] / self.rho.leftBoundaryValue[i]
             uR = self.rhoU.rightBoundaryValue[i] / self.rho.rightBoundaryValue[i]
             pL = self.p(self.rho.leftBoundaryValue[i], self.rhoU.leftBoundaryValue[i], self.rhoE.leftBoundaryValue[i])
@@ -52,13 +53,14 @@ class RiemannRoe(SolverBase):
                 - .5 * (lambda1*dw1*(uAve**2/2) + lambda2*rhoAve/(2*cAve)*dw2*(hAve+cAve*uAve) - lambda3*rhoAve/(2*cAve)*dw3*(hAve-cAve*uAve))
 
         # 境界条件
-        self.rho.f[0] = self.rho.f[1]
-        self.rhoU.f[0] = self.rhoU.f[1]
-        self.rhoE.f[0] = self.rhoE.f[1]
+        for i in range(self.order):
+            self.rho.f[i] = self.rho.f[self.order]
+            self.rhoU.f[i] = self.rhoU.f[self.order]
+            self.rhoE.f[i] = self.rhoE.f[self.order]
         
-        self.rho.f[-1] = self.rho.f[-2]
-        self.rhoU.f[-1] = self.rhoU.f[-2]
-        self.rhoE.f[-1] = self.rhoE.f[-2]
+            self.rho.f[-1*i - 1] = self.rho.f[-1*self.order - 1]
+            self.rhoU.f[-1*i - 1] = self.rhoU.f[-1*self.order - 1]
+            self.rhoE.f[-1*i - 1] = self.rhoE.f[-1*self.order - 1]
         
 
 def Harten(alpha:float, epsilon:float) -> float:

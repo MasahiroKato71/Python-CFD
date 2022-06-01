@@ -5,9 +5,9 @@ from Reconstruction import *
 from Solver import *
 
 
-def ShockTube(lenght:int, rhoLow:float, rhoHigh:float, pLow:float, pHigh:float, xMin:float, xMax:float, gamma:float=1.4):
+def ShockTube(lenght:int, rhoLow:float, rhoHigh:float, pLow:float, pHigh:float, xMin:float, xMax:float, gamma:float=1.4, order:int=1):
     dx = (xMax - xMin) / lenght
-    lenght += 2 # ゴーストセル分加算
+    lenght += 2*order # ゴーストセル分加算
     rho = Rho(lenght)
     rhoU = RhoU(lenght)
     rhoE = RhoE(lenght)

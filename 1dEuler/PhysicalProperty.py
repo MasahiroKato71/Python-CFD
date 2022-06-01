@@ -17,6 +17,7 @@ class X():
         for i in range(len(self.value)-1):
             self.value[i] = (self.boundaryValue[i] + self.boundaryValue[i+1]) / 2
 
+
 # 圧力モデル
 class P():
     def __init__(self, gamma:float=1.4):
