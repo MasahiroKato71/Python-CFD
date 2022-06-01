@@ -67,7 +67,11 @@ class RiemannRoe(SolverBase):
         
 
 def Harten(alpha:float, epsilon:float) -> float:
+    if not (type(alpha) is float and type(epsilon) is float):
+        raise TypeError
+    
     if abs(alpha) < 2*epsilon:
         return alpha**2 / (4 * epsilon) + epsilon       
     else:
         return abs(alpha)
+    

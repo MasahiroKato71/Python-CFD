@@ -7,16 +7,22 @@ from typing import Final
 # セル位置モデル
 class X():
     def __init__(self, length:int):
+        if type(length) is not int:
+            raise TypeError
+        
         self.value = [0. for _ in range(length)]
         self.boundaryValue = [0. for _ in range(length+1)]
         
-    def setValue(self):
+    def SetValue(self):
         for i in range(len(self.value)-1):
             self.value[i] = (self.boundaryValue[i] + self.boundaryValue[i+1]) / 2
 
 # 圧力モデル
 class P():
-    def __init__(self, gamma:int=1.4):
+    def __init__(self, gamma:float=1.4):
+        if type(gamma) is not float:
+            raise TypeError
+        
         self.gamma:Final[float] = gamma
         
     def __call__(self, rho:float, rhoU:float, rhoE:float) -> float:

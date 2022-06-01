@@ -18,5 +18,8 @@ class PhysicalPropertyBase():
 class SolverBase():
     def __call__() -> None:
         raise NotImplementedError
-        
+    
+class TimeIntegrationMethodBase():
+    def __call__() -> None:
+        raise NotImplementedError
             

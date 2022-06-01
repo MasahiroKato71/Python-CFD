@@ -9,8 +9,15 @@ from Reconstruction import *
 from Solver import *
 
 
-class EulearFront():
+class EulearFront(TimeIntegrationMethodBase):
     def __init__(self, rho:Rho, rhoU:RhoU, rhoE:RhoE, p:P, x:X, solver:SolverBase, reconstructer:function, cflnum:float):
+        if not (type(rho) is Rho and type(rhoU) is RhoU and type(rhoE) is RhoE and type(p) is P and type(x) is X):
+            raise TypeError
+        if not (isinstance(solver, SolverBase) and callable(reconstructer)):
+            raise TypeError
+        if type(cflnum) is not float:
+            raise TypeError
+                 
         self.rho = rho
         self.rhoU = rhoU
         self.rhoE = rhoE
@@ -39,7 +46,7 @@ class EulearFront():
             self.reconstructer(self.rhoU)
             self.reconstructer(self.rhoE)
             self.solver()
-            self.update(dt)
+            self.Update(dt)
             
             t += dt
             
@@ -57,7 +64,7 @@ class EulearFront():
             figP.legend()
             plt.savefig(figName)
         
-    def update(self, dt:float) -> None:
+    def Update(self, dt:float) -> None:
         if type(dt) is not float:
             raise TypeError
         for i in range(1, len(self.rho.value)):
@@ -65,7 +72,7 @@ class EulearFront():
             self.rhoU.value[i] += dt*(self.rhoU.f[i] - self.rhoU.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             self.rhoE.value[i] += dt*(self.rhoE.f[i] - self.rhoE.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
           
-          
+        
     def dtCalc(self) -> float:
         dt = 1e2
         for i in range(len(self.rho.value)):
@@ -78,10 +85,4 @@ class EulearFront():
             dt = min(dt, self.cflnum*(self.x.boundaryValue[i+1] - self.x.boundaryValue[i])/lambdaMax)
         
         return dt
-
-
-
-
-     
-     
-     
+    
