@@ -61,7 +61,7 @@ class TimeIntegrationMethodBase():
     
     def dtCalc(self) -> float:
         dt = 1e2
-        for i in range(len(self.rho.value)):
+        for i in range(1,len(self.x.value)-1):
             u = self.rhoU.value[i] / self.rho.value[i]
             c = math.sqrt(self.p.gamma * self.p(self.rho.value[i], self.rhoU.value[i], self.rhoE.value[i])/ self.rho.value[i])
             lambda1 = abs(u)
@@ -105,7 +105,7 @@ class EulearFront(TimeIntegrationMethodBase):
         self.reconstructer(self.rhoU)
         self.reconstructer(self.rhoE)
         self.solver()
-        for i in range(1, len(self.rho.value)):
+        for i in range(1, len(self.x.value)):
             self.rho.value[i] += dt*(self.rho.f[i] - self.rho.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             self.rhoU.value[i] += dt*(self.rhoU.f[i] - self.rhoU.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             self.rhoE.value[i] += dt*(self.rhoE.f[i] - self.rhoE.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
@@ -127,7 +127,7 @@ class RungeKutta2(TimeIntegrationMethodBase):
         
         rhoAster, rhoUAster, rhoEAster = copy.copy(self.rho.value), copy.copy(self.rhoU.value), copy.copy(self.rhoE.value)
         LhRho, LhRhoU, LhRhoE = [0. for _ in range(len(self.x.value))], [0. for _ in range(len(self.x.value))], [0. for _ in range(len(self.x.value))]
-        for i in range(1, len(self.rho.value)):
+        for i in range(1, len(self.x.value)):
             LhRho[i] = (self.rho.f[i] - self.rho.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             LhRhoU[i] = (self.rhoU.f[i] - self.rhoU.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             LhRhoE[i] = (self.rhoE.f[i] - self.rhoE.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
