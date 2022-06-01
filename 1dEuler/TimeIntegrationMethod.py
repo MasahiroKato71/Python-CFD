@@ -24,6 +24,10 @@ class EulearFront(TimeIntegrationMethodBase):
         self.p = p
         self.x = x
         self.solver = solver
+        self.solver.rho = rho
+        self.solver.rhoU = rhoU
+        self.solver.rhoE = rhoE
+        self.solver.p = p
         self.reconstructer = reconstructer        
         self.cflnum = cflnum
     

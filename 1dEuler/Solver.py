@@ -7,16 +7,11 @@ from PhysicalProperty import *
 
 
 class RiemannRoe(SolverBase):
-    def __init__(self, rho:Rho, rhoU:RhoU, rhoE:RhoE, p:P, epsilon:float=0.15):
+    def __init__(self, epsilon:float=0.15):
         if type(epsilon) is not float:
             raise TypeError
-        if not (type(rho) is Rho and type(rhoU) is RhoU and type(rhoE) is RhoE and type(p) is P):
-            raise TypeError
         
-        self.rho = rho
-        self.rhoU = rhoU
-        self.rhoE = rhoE
-        self.p = p
+        self.rho = self.rhoU = self.rhoE = self.p = None
         self.epsilon = epsilon
         
     def __call__(self) -> None:
