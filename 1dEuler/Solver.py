@@ -15,7 +15,7 @@ class RiemannRoe(SolverBase):
         self.epsilon = epsilon
         
     def __call__(self) -> None:
-        for i in range(1, len(self.rho.value)):
+        for i in range(1, len(self.rho.rightBoundaryValue)-1):
             # プリミティブ変数の算出
             rhoR = self.rho.rightBoundaryValue[i]
             rhoL = self.rho.leftBoundaryValue[i]

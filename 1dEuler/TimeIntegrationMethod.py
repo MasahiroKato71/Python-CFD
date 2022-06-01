@@ -71,7 +71,7 @@ class EulearFront(TimeIntegrationMethodBase):
     def Update(self, dt:float) -> None:
         if type(dt) is not float:
             raise TypeError
-        for i in range(1, len(self.rho.value)):
+        for i in range(len(self.x.value)):
             self.rho.value[i] += dt*(self.rho.f[i] - self.rho.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             self.rhoU.value[i] += dt*(self.rhoU.f[i] - self.rhoU.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
             self.rhoE.value[i] += dt*(self.rhoE.f[i] - self.rhoE.f[i+1]) / (self.x.boundaryValue[i+1] - self.x.boundaryValue[i])
@@ -79,7 +79,7 @@ class EulearFront(TimeIntegrationMethodBase):
         
     def dtCalc(self) -> float:
         dt = 1e2
-        for i in range(len(self.rho.value)):
+        for i in range(1,len(self.x.value)-1):
             u = self.rhoU.value[i] / self.rho.value[i]
             c = math.sqrt(self.p.gamma * self.p(self.rho.value[i], self.rhoU.value[i], self.rhoE.value[i])/ self.rho.value[i])
             lambda1 = abs(u)

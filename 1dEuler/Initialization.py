@@ -20,7 +20,7 @@ def ShockTube(lenght:int, rhoLow:float, rhoHigh:float, pLow:float, pHigh:float, 
         
     x.SetValue()
         
-    for i, x_ in enumerate(x.boundaryValue[:-1]):
+    for i, x_ in enumerate(x.value):
         if x_ < (xMax+xMin)/2:
             p_ = pHigh
             u_ = 0.
