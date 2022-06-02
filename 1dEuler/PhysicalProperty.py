@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import ModelBase
+from ModelBase import PhysicalPropertyBase
 from typing import Final
 
 
@@ -34,7 +34,7 @@ class P():
     
     
 # 密度モデル（質量保存則）
-class Rho(ModelBase.PhysicalPropertyBase):
+class Rho(PhysicalPropertyBase):
     @staticmethod
     def F(rhoU) -> float:
         if type(rhoU) is not float:
@@ -44,7 +44,7 @@ class Rho(ModelBase.PhysicalPropertyBase):
 
 
 # 運動量モデル（運動量保存則）
-class RhoU(ModelBase.PhysicalPropertyBase):
+class RhoU(PhysicalPropertyBase):
     @staticmethod
     def F(rho:float, rhoU:float, p:float) -> float:
         if not (type(rho) is float and type(rhoU) is float and type(p) is float):
@@ -54,7 +54,7 @@ class RhoU(ModelBase.PhysicalPropertyBase):
 
 
 # 総エネルギーモデル（エネルギー保存則）
-class RhoE(ModelBase.PhysicalPropertyBase):
+class RhoE(PhysicalPropertyBase):
     @staticmethod
     def F(rho:float, rhoU:float, rhoE:float, p:float) -> float:
         if not (type(rho) is float and type(rhoU) is float and type(rhoE) is float and type(p) is float):
